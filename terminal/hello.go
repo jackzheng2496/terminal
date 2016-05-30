@@ -1,62 +1,71 @@
 package main
 
 import (
-	"bufio"
+	//"bufio"
 	"fmt"
 	"github.com/jackzheng2496/stringutil"
-	"os"
-	"strings"
+	"time"
+	//"os"
+	//"strings"
 )
 
 func main() {
-	reader := bufio.NewReader(os.Stdin)
-	data := make(map[string]int)
+	s := time.Now()
+	formatTime := s.Format(time.ANSIC)
+	testAnime := stringutil.NewAnime("name", formatTime, 5, 2)
+	formatTime = s.Format(time.ANSIC)
+	testManga := stringutil.NewManga("Manga", formatTime, 4, 1)
+	stringutil.PrintList(testAnime, testManga)
+	fmt.Println()
 
-	for {
-		fmt.Printf("$>jsh: ")
+	//reader := bufio.NewReader(os.Stdin)
+	//data := make(map[string]int)
 
-		text, _ := reader.ReadString('\n')
-		text = text[:len(text)-1]
-		splitArgs := strings.Split(text, " ")
-
-		switch splitArgs[0] {
-		case stringutil.PUT:
-			if len(splitArgs) == 3 {
-				stringutil.AddToList(data, splitArgs[1])
-				stringutil.UpdateListValue(data, splitArgs[1], splitArgs[2])
-			} else if len(splitArgs) == 2 {
-				stringutil.AddToList(data, splitArgs[1])
-			} else {
-				fmt.Println("Missing Arguments")
-			}
-		case stringutil.UPDATE:
-			if len(splitArgs) == 3 {
-				stringutil.UpdateListValue(data, splitArgs[1], splitArgs[2])
-			} else {
-				fmt.Println("Missing Arguments")
-			}
-		case stringutil.LIST:
-			stringutil.PrintList(data)
-			fmt.Print("\n")
-		case stringutil.GET:
-			if len(splitArgs) == 2 {
-				val := stringutil.GetMapValue(data, splitArgs[1])
-				fmt.Println(splitArgs[1], ":", val)
-			} else {
-				fmt.Println("Missing Arguments")
-			}
-		case stringutil.RM:
-			if len(splitArgs) == 2 {
-				stringutil.RemoveValue(data, splitArgs[1])
-			} else {
-				fmt.Println("Missing Arguments")
-			}
-		case stringutil.QUIT:
-			fmt.Println("Exiting app...")
-			os.Exit(0)
-		default:
-			fmt.Println("No such Command")
-		}
-
-	}
+	// for {
+	// 	fmt.Printf("$>jsh: ")
+	//
+	// 	text, _ := reader.ReadString('\n')
+	// 	text = text[:len(text)-1]
+	// 	splitArgs := strings.Split(text, " ")
+	//
+	// 	switch splitArgs[0] {
+	// 	case stringutil.PUT:
+	// 		if len(splitArgs) == 3 {
+	// 			stringutil.AddToList(data, splitArgs[1])
+	// 			stringutil.UpdateListValue(data, splitArgs[1], splitArgs[2])
+	// 		} else if len(splitArgs) == 2 {
+	// 			stringutil.AddToList(data, splitArgs[1])
+	// 		} else {
+	// 			fmt.Println("Missing Arguments")
+	// 		}
+	// 	case stringutil.UPDATE:
+	// 		if len(splitArgs) == 3 {
+	// 			stringutil.UpdateListValue(data, splitArgs[1], splitArgs[2])
+	// 		} else {
+	// 			fmt.Println("Missing Arguments")
+	// 		}
+	// 	case stringutil.LIST:
+	// 		stringutil.PrintList(data)
+	// 		fmt.Print("\n")
+	// 	case stringutil.GET:
+	// 		if len(splitArgs) == 2 {
+	// 			val := stringutil.GetMapValue(data, splitArgs[1])
+	// 			fmt.Println(splitArgs[1], ":", val)
+	// 		} else {
+	// 			fmt.Println("Missing Arguments")
+	// 		}
+	// 	case stringutil.RM:
+	// 		if len(splitArgs) == 2 {
+	// 			stringutil.RemoveValue(data, splitArgs[1])
+	// 		} else {
+	// 			fmt.Println("Missing Arguments")
+	// 		}
+	// 	case stringutil.QUIT:
+	// 		fmt.Println("Exiting app...")
+	// 		os.Exit(0)
+	// 	default:
+	// 		fmt.Println("No such Command")
+	// 	}
+	//
+	// }
 }

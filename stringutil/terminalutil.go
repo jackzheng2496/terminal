@@ -18,59 +18,10 @@ const (
 	QUIT   string = "quit"
 )
 
-type Entertainment interface {
-	FormattedOutput() string
-	UpdateTimeStamp()
-	UpdateValue()
-	UpdateSubVal()
-}
-
-/*
-	Decided to make a struct to contain values instead of
-	key:value map
-*/
-type Japan struct {
-	name, timestamp string
-}
-
-type Anime struct {
-	Japan
-	episode, season int
-}
-
-func NewAnime(name string, timestamp string, episode, season int) *Anime {
-	return &Anime{
-		episode: episode,
-		season:  season,
-		Japan: Japan{
-			name:      name,
-			timestamp: timestamp,
-		},
-	}
-}
-
-func (a Anime) FormattedOutput() {
-	fmt.Printf("%s Season %d Episode %d Last Modified: %s",
-		a.name, a.season, a.episode, a.timestamp)
-}
-
-func (a Anime) UpdateTimeStamp(timestamp string) {
-
-}
-
-type Manga struct {
-	Japan
-	chapter, novel int
-}
-
-func NewManga(name string, timestamp string, chapter, novel int) *Manga {
-	return &Manga{
-		chapter: chapter,
-		novel:   novel,
-		Japan: Japan{
-			name:      name,
-			timestamp: timestamp,
-		},
+func PrintList(e ...Entertainment) {
+	for _, e := range e {
+		e.FormattedOutput()
+		fmt.Println()
 	}
 }
 
