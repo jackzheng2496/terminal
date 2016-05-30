@@ -1,8 +1,9 @@
 package stringutil
 
 import (
+	//"bytes"
 	"fmt"
-	"strconv"
+	//"strconv"
 )
 
 /*
@@ -17,52 +18,65 @@ const (
 	QUIT   string = "quit"
 )
 
+type Entertainment interface {
+	FormattedOutput() string
+	UpdateTimeStamp()
+	UpdateValue()
+	UpdateSubVal()
+}
+
 /*
 	Decided to make a struct to contain values instead of
 	key:value map
 */
-type Entertainment struct {
-	name, kind string
-	timestamp  float64
-	count      int
+type Japan struct {
+	name, timestamp string
+}
+
+type Anime struct {
+	Japan
+	episode, season int
+}
+
+func NewAnime(name string, timestamp string, episode, season int) *Anime {
+	return &Anime{
+		episode: episode,
+		season:  season,
+		Japan: Japan{
+			name:      name,
+			timestamp: timestamp,
+		},
+	}
+}
+
+func (a Anime) FormattedOutput() {
+	fmt.Printf("%s Season %d Episode %d Last Modified: %s",
+		a.name, a.season, a.episode, a.timestamp)
+}
+
+func (a Anime) UpdateTimeStamp(timestamp string) {
+
+}
+
+type Manga struct {
+	Japan
+	chapter, novel int
+}
+
+func NewManga(name string, timestamp string, chapter, novel int) *Manga {
+	return &Manga{
+		chapter: chapter,
+		novel:   novel,
+		Japan: Japan{
+			name:      name,
+			timestamp: timestamp,
+		},
+	}
 }
 
 /*
-	Not too sure how this works, so UpdateCount can only
-	be called with Entertainment structs?
+	TODO: Figure out how to organize these structs more efficiently
 */
-func (e *Entertainment) UpdateCount(count string) int {
-	i, err := strconv.Atoi(count)
-	if err != nil {
-		fmt.Println(err)
-		return -1
-	}
-	e.count = i
-	return i
-}
-
-func (e *Entertainment) GetCount() int {
-	return e.count
-}
-
-func AddToList(list map[string]Entertainment, e Entertainment) int {
-	_, value := list[e.name]
-	if value == false {
-		list[e.name] = e
-		return e.count
-	} else {
-		return list[e.name].count
-	}
-}
-
-func RemoveKey(list map[string]Entertainment, name string) {
-	_, e := list[name]
-	if e != false {
-		delete(list, name)
-	} else {
-		fmt.Println("Invalid value")
-	}
-}
 
 // func AddToList(list map[string]int, name string) int {
 // 	_, value := list[name]
