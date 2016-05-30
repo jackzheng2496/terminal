@@ -18,6 +18,7 @@ const (
 	QUIT   string = "quit"
 	ANIME  string = "-a"
 	MANGA  string = "-m"
+	SUBVAL string = "-s"
 )
 
 func AddOnArgs(option string, words []string) stringutil.Entertainment {
@@ -60,16 +61,39 @@ func main() {
 
 		switch words[0] { //Get first argument
 		case PUT:
-			NewE := AddOnArgs(words[1], words)
-			if NewE != nil {
-				stringutil.AddToMap(shittyDB, NewE, words[2])
+			if len(words) < 3 {
+				fmt.Println("Too little arguments")
 			} else {
-				fmt.Println("Invalid Arguments")
+				NewE := AddOnArgs(words[1], words)
+				if NewE != nil {
+					stringutil.AddToMap(shittyDB, NewE, words[2])
+				} else {
+					fmt.Println("Invalid Arguments")
+				}
 			}
 		case LIST:
 			for _, value := range shittyDB {
-				stringutil.PrintList(value)
+				value.FormattedOutput()
+				fmt.Println()
 			}
+		//TODO: Figure out why the interface thing doesn't work
+		case UPDATE:
+			if len(words) < 3 || len(words) > 4 {
+				fmt.Println("Too little arguments")
+			} else {
+				if len(words) == 4 {
+					if strings.Compare(words[1], SUBVAL) == 0 {
+						stringutil.UpdateSub(shittyDB[words[2]], words[3])
+					} else {
+						fmt.Println("Invalid Arguments")
+					}
+				} else {
+					stringutil.UpdateVal(shittyDB[words[1]], words[2])
+				}
+
+			}
+		default:
+			fmt.Println("Invalid Command")
 		}
 
 	}

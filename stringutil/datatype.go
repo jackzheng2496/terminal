@@ -58,7 +58,7 @@ func NewManga(name, timestamp, chapter, novel string) *Manga {
 }
 
 func (m Manga) FormattedOutput() {
-	fmt.Printf("%s Season %s Chapter %s Last Modified: %s",
+	fmt.Printf("%s Novel %s Chapter %s Last Modified: %s",
 		m.name, m.novel, m.chapter, m.timestamp)
 }
 

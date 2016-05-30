@@ -1,9 +1,5 @@
 package stringutil
 
-import (
-	"fmt"
-)
-
 func AddToMap(list map[string]Entertainment, e Entertainment, name string) {
 	_, value := list[name]
 	if !value {
@@ -29,9 +25,4 @@ func RemoveMapValue(list map[string]Entertainment, name string) Entertainment {
 	} else {
 		return nil
 	}
-}
-
-func PrintList(e Entertainment) {
-	e.FormattedOutput()
-	fmt.Println()
 }
