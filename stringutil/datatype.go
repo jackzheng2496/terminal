@@ -10,15 +10,15 @@ type Japan struct {
 
 type Anime struct {
 	Japan
-	episode, season int
+	episode, season string
 }
 
 type Manga struct {
 	Japan
-	chapter, novel int
+	chapter, novel string
 }
 
-func NewAnime(name string, timestamp string, episode, season int) *Anime {
+func NewAnime(name, timestamp, episode, season string) *Anime {
 	return &Anime{
 		episode: episode,
 		season:  season,
@@ -30,7 +30,7 @@ func NewAnime(name string, timestamp string, episode, season int) *Anime {
 }
 
 func (a Anime) FormattedOutput() {
-	fmt.Printf("%s Season %d Episode %d Last Modified: %s",
+	fmt.Printf("%s Season %s Episode %s Last Modified: %s",
 		a.name, a.season, a.episode, a.timestamp)
 }
 
@@ -38,15 +38,15 @@ func (a Anime) UpdateTimeStamp(timestamp string) {
 	a.timestamp = timestamp
 }
 
-func (a Anime) UpdateValue(value int) {
+func (a Anime) UpdateValue(value string) {
 	a.episode = value
 }
 
-func (a Anime) UpdateSubVal(value int) {
+func (a Anime) UpdateSubVal(value string) {
 	a.season = value
 }
 
-func NewManga(name string, timestamp string, chapter, novel int) *Manga {
+func NewManga(name, timestamp, chapter, novel string) *Manga {
 	return &Manga{
 		chapter: chapter,
 		novel:   novel,
@@ -58,7 +58,7 @@ func NewManga(name string, timestamp string, chapter, novel int) *Manga {
 }
 
 func (m Manga) FormattedOutput() {
-	fmt.Printf("%s Season %d Chapter %d Last Modified: %s",
+	fmt.Printf("%s Season %s Chapter %s Last Modified: %s",
 		m.name, m.novel, m.chapter, m.timestamp)
 }
 
@@ -66,10 +66,10 @@ func (m Manga) UpdateTimeStamp(timestamp string) {
 	m.timestamp = timestamp
 }
 
-func (m Manga) UpdateValue(value int) {
+func (m Manga) UpdateValue(value string) {
 	m.chapter = value
 }
 
-func (m Manga) UpdateSubVal(value int) {
+func (m Manga) UpdateSubVal(value string) {
 	m.novel = value
 }

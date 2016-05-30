@@ -1,22 +1,85 @@
 package main
 
 import (
-	//"bufio"
+	"bufio"
 	"fmt"
 	"github.com/jackzheng2496/stringutil"
+	"os"
+	"strings"
 	"time"
-	//"os"
-	//"strings"
 )
 
+const (
+	PUT    string = "put"
+	RM     string = "rm"
+	UPDATE string = "update"
+	GET    string = "get"
+	LIST   string = "list"
+	QUIT   string = "quit"
+	ANIME  string = "-a"
+	MANGA  string = "-m"
+)
+
+func AddOnArgs(option string, words []string) stringutil.Entertainment {
+	CurrentTime := time.Now()
+	FormatTime := CurrentTime.Format(time.ANSIC)
+
+	switch option {
+	case ANIME:
+		if len(words) == 4 {
+			return stringutil.NewAnime(words[2], FormatTime, words[3], "0")
+		} else if len(words) == 3 {
+			return stringutil.NewAnime(words[2], FormatTime, "0", "0")
+		} else {
+			return nil
+		}
+	case MANGA:
+		if len(words) == 4 {
+			return stringutil.NewManga(words[2], FormatTime, words[3], "0")
+		} else if len(words) == 3 {
+			return stringutil.NewManga(words[2], FormatTime, "0", "0")
+		} else {
+			return nil
+		}
+	default:
+		return nil
+	}
+
+}
+
 func main() {
-	s := time.Now()
-	formatTime := s.Format(time.ANSIC)
-	testAnime := stringutil.NewAnime("name", formatTime, 5, 2)
-	formatTime = s.Format(time.ANSIC)
-	testManga := stringutil.NewManga("Manga", formatTime, 4, 1)
-	stringutil.PrintList(testAnime, testManga)
-	fmt.Println()
+	reader := bufio.NewReader(os.Stdin)
+	shittyDB := make(map[string]stringutil.Entertainment)
+	//	Main loop of terminal
+	for {
+		fmt.Print("terminal: ")
+
+		input, _ := reader.ReadString('\n')
+		input = strings.Trim(input, "\n")  //Remove newline character
+		words := strings.Split(input, " ") //Split on space to get words
+
+		switch words[0] { //Get first argument
+		case PUT:
+			NewE := AddOnArgs(words[1], words)
+			if NewE != nil {
+				stringutil.AddToMap(shittyDB, NewE, words[2])
+			} else {
+				fmt.Println("Invalid Arguments")
+			}
+		case LIST:
+			for _, value := range shittyDB {
+				stringutil.PrintList(value)
+			}
+		}
+
+	}
+	// s := time.Now()
+	// formatTime := s.Format(time.ANSIC)
+	// testAnime := stringutil.NewAnime("name", formatTime, 5, 2)
+	// formatTime = s.Format(time.ANSIC)
+	// testManga := stringutil.NewManga("Manga", formatTime, 4, 1)
+	// stringutil.PrintList(testAnime, testManga)
+	// fmt.Println()
 
 	//reader := bufio.NewReader(os.Stdin)
 	//data := make(map[string]int)
