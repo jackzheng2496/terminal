@@ -26,3 +26,13 @@ func RemoveMapValue(list map[string]Entertainer, name string) Entertainer {
 		return nil
 	}
 }
+
+//TODO:	Figure out how to check type at runtime
+// func SaveType(param interface{}) {
+// 	switch t := param.(type) {
+// 	case Anime:
+//
+// 	case Manga:
+//
+// 	}
+// }

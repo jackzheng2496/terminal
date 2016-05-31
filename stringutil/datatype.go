@@ -18,6 +18,8 @@ type Manga struct {
 	Chapter, Volume, Publisher string
 }
 
+//TODO:	Should prob make these functions return default Anime/Manga values
+
 func NewAnime(name, timestamp, episode, season, studio string) *Anime {
 	return &Anime{
 		Episode:  episode,
