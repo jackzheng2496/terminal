@@ -21,16 +21,16 @@ const (
 	SUBVAL string = "-s"
 )
 
-func AddOnArgs(option string, words []string) stringutil.Entertainment {
+func AddOnArgs(option string, words []string) stringutil.Entertainer {
 	CurrentTime := time.Now()
 	FormatTime := CurrentTime.Format(time.ANSIC)
 
 	switch option {
 	case ANIME:
 		if len(words) == 4 {
-			return stringutil.NewAnime(words[2], FormatTime, words[3], "0")
+			return stringutil.NewAnime(words[2], FormatTime, words[3], "0", "n/a")
 		} else if len(words) == 3 {
-			return stringutil.NewAnime(words[2], FormatTime, "0", "0")
+			return stringutil.NewAnime(words[2], FormatTime, "0", "0", "n/a")
 		} else {
 			return nil
 		}
@@ -50,9 +50,14 @@ func AddOnArgs(option string, words []string) stringutil.Entertainment {
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
-	shittyDB := make(map[string]stringutil.Entertainment)
+	shittyDB := make(map[string]stringutil.Entertainer)
+	loop := true
 	//	Main loop of terminal
 	for {
+		if !loop {
+			break
+		}
+
 		fmt.Print("terminal: ")
 
 		input, _ := reader.ReadString('\n')
@@ -76,7 +81,6 @@ func main() {
 				value.FormattedOutput()
 				fmt.Println()
 			}
-		//TODO: Figure out why the interface thing doesn't work
 		case UPDATE:
 			if len(words) < 3 || len(words) > 4 {
 				fmt.Println("Too little arguments")
@@ -92,67 +96,30 @@ func main() {
 				}
 
 			}
+		case GET:
+			if len(words) == 2 {
+				_, exist := shittyDB[words[1]]
+				if exist {
+					shittyDB[words[1]].FormattedOutput()
+					fmt.Println()
+				} else {
+					fmt.Println("No such key")
+				}
+			}
+		case RM:
+			if len(words) == 2 {
+				_, exist := shittyDB[words[1]]
+				if exist {
+					stringutil.RemoveMapValue(shittyDB, words[1])
+				} else {
+					fmt.Println("No such key")
+				}
+			}
+		case QUIT:
+			loop = false
 		default:
 			fmt.Println("Invalid Command")
 		}
-
 	}
-	// s := time.Now()
-	// formatTime := s.Format(time.ANSIC)
-	// testAnime := stringutil.NewAnime("name", formatTime, 5, 2)
-	// formatTime = s.Format(time.ANSIC)
-	// testManga := stringutil.NewManga("Manga", formatTime, 4, 1)
-	// stringutil.PrintList(testAnime, testManga)
-	// fmt.Println()
-
-	//reader := bufio.NewReader(os.Stdin)
-	//data := make(map[string]int)
-
-	// for {
-	// 	fmt.Printf("$>jsh: ")
-	//
-	// 	text, _ := reader.ReadString('\n')
-	// 	text = text[:len(text)-1]
-	// 	splitArgs := strings.Split(text, " ")
-	//
-	// 	switch splitArgs[0] {
-	// 	case stringutil.PUT:
-	// 		if len(splitArgs) == 3 {
-	// 			stringutil.AddToList(data, splitArgs[1])
-	// 			stringutil.UpdateListValue(data, splitArgs[1], splitArgs[2])
-	// 		} else if len(splitArgs) == 2 {
-	// 			stringutil.AddToList(data, splitArgs[1])
-	// 		} else {
-	// 			fmt.Println("Missing Arguments")
-	// 		}
-	// 	case stringutil.UPDATE:
-	// 		if len(splitArgs) == 3 {
-	// 			stringutil.UpdateListValue(data, splitArgs[1], splitArgs[2])
-	// 		} else {
-	// 			fmt.Println("Missing Arguments")
-	// 		}
-	// 	case stringutil.LIST:
-	// 		stringutil.PrintList(data)
-	// 		fmt.Print("\n")
-	// 	case stringutil.GET:
-	// 		if len(splitArgs) == 2 {
-	// 			val := stringutil.GetMapValue(data, splitArgs[1])
-	// 			fmt.Println(splitArgs[1], ":", val)
-	// 		} else {
-	// 			fmt.Println("Missing Arguments")
-	// 		}
-	// 	case stringutil.RM:
-	// 		if len(splitArgs) == 2 {
-	// 			stringutil.RemoveValue(data, splitArgs[1])
-	// 		} else {
-	// 			fmt.Println("Missing Arguments")
-	// 		}
-	// 	case stringutil.QUIT:
-	// 		fmt.Println("Exiting app...")
-	// 		os.Exit(0)
-	// 	default:
-	// 		fmt.Println("No such Command")
-	// 	}
-	//
-	// }
+	fmt.Println("Saving to shittyDB...")
 }

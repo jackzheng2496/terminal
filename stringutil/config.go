@@ -1,20 +1,20 @@
 package stringutil
 
-type Entertainment interface {
+type Entertainer interface {
 	FormattedOutput()
 	UpdateTimeStamp(timestamp string)
 	UpdateValue(value string)
 	UpdateSubVal(value string)
 }
 
-func UpdateTimestamp(e Entertainment, timestamp string) {
+func UpdateTimestamp(e Entertainer, timestamp string) {
 	e.UpdateTimeStamp(timestamp)
 }
 
-func UpdateVal(e Entertainment, val string) {
+func UpdateVal(e Entertainer, val string) {
 	e.UpdateValue(val)
 }
 
-func UpdateSub(e Entertainment, val string) {
+func UpdateSub(e Entertainer, val string) {
 	e.UpdateSubVal(val)
 }

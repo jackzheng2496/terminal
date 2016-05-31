@@ -4,72 +4,75 @@ import (
 	"fmt"
 )
 
-type Japan struct {
-	name, timestamp string
+type Japanese struct {
+	Name, Timestamp string
 }
 
 type Anime struct {
-	Japan
-	episode, season string
+	Japanese
+	Episode, Season, Studio string
 }
 
 type Manga struct {
-	Japan
-	chapter, novel string
+	Japanese
+	Chapter, Volume, Publisher string
 }
 
-func NewAnime(name, timestamp, episode, season string) *Anime {
+func NewAnime(name, timestamp, episode, season, studio string) *Anime {
 	return &Anime{
-		episode: episode,
-		season:  season,
-		Japan: Japan{
-			name:      name,
-			timestamp: timestamp,
-		},
+		Episode:  episode,
+		Season:   season,
+		Studio:   studio,
+		Japanese: Japanese{Name: name, Timestamp: timestamp},
 	}
-}
-
-func (a Anime) FormattedOutput() {
-	fmt.Printf("%s Season %s Episode %s Last Modified: %s",
-		a.name, a.season, a.episode, a.timestamp)
-}
-
-func (a Anime) UpdateTimeStamp(timestamp string) {
-	a.timestamp = timestamp
-}
-
-func (a Anime) UpdateValue(value string) {
-	a.episode = value
-}
-
-func (a Anime) UpdateSubVal(value string) {
-	a.season = value
 }
 
 func NewManga(name, timestamp, chapter, novel string) *Manga {
 	return &Manga{
-		chapter: chapter,
-		novel:   novel,
-		Japan: Japan{
-			name:      name,
-			timestamp: timestamp,
-		},
+		Chapter:  chapter,
+		Volume:   novel,
+		Japanese: Japanese{Name: name, Timestamp: timestamp},
 	}
 }
 
-func (m Manga) FormattedOutput() {
-	fmt.Printf("%s Novel %s Chapter %s Last Modified: %s",
-		m.name, m.novel, m.chapter, m.timestamp)
+func (a *Anime) FormattedOutput() {
+	fmt.Printf("%s Season %s Episode %s", a.Name, a.Season, a.Episode)
 }
 
-func (m Manga) UpdateTimeStamp(timestamp string) {
-	m.timestamp = timestamp
+func (a *Anime) LongOutput() {
+	fmt.Printf("%s Season %s Episode %s Studio %s Modified: %s",
+		a.Name, a.Season, a.Episode, a.Studio, a.Timestamp)
 }
 
-func (m Manga) UpdateValue(value string) {
-	m.chapter = value
+func (m *Manga) FormattedOutput() {
+	fmt.Printf("%s Volume %s Chapter %s", m.Name, m.Volume, m.Chapter)
 }
 
-func (m Manga) UpdateSubVal(value string) {
-	m.novel = value
+func (m *Manga) LongOutput() {
+	fmt.Printf("%s Volume %s Chapter %s Publisher %s Modified: %s",
+		m.Name, m.Volume, m.Chapter, m.Publisher, m.Timestamp)
+}
+
+func (a *Anime) UpdateTimeStamp(timestamp string) {
+	a.Timestamp = timestamp
+}
+
+func (m *Manga) UpdateTimeStamp(timestamp string) {
+	m.Timestamp = timestamp
+}
+
+func (a *Anime) UpdateValue(value string) {
+	a.Episode = value
+}
+
+func (m *Manga) UpdateValue(value string) {
+	m.Chapter = value
+}
+
+func (a *Anime) UpdateSubVal(value string) {
+	a.Season = value
+}
+
+func (m *Manga) UpdateSubVal(value string) {
+	m.Volume = value
 }
