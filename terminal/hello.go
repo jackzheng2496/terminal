@@ -122,4 +122,23 @@ func main() {
 		}
 	}
 	fmt.Println("Saving to shittyDB...")
+
+	//	Saving current info in shittyDB
+	file, err := os.Create("./shittyDB.txt")
+	check(err)
+
+	defer file.Close() //Idiomatic to defer file closing after opening
+
+	for key, _ := range shittyDB {
+		file.WriteString(key)
+		file.WriteString("\n")
+	}
+
+	file.Sync()
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
