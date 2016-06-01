@@ -4,21 +4,24 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/jackzheng2496/stringutil"
+	"log"
 	"os"
 	"strings"
 	"time"
 )
 
 const (
-	PUT    string = "put"
-	RM     string = "rm"
-	UPDATE string = "update"
-	GET    string = "get"
-	LIST   string = "list"
-	QUIT   string = "quit"
-	ANIME  string = "-a"
-	MANGA  string = "-m"
-	SUBVAL string = "-s"
+	PUT      string = "put"
+	RM       string = "rm"
+	UPDATE   string = "update"
+	GET      string = "get"
+	LIST     string = "list"
+	LONGLIST string = "-l"
+	QUIT     string = "quit"
+	ANIME    string = "-a"
+	MANGA    string = "-m"
+	SUBVAL   string = "-s"
+	STUDIO   string = "-st"
 )
 
 var (
@@ -81,8 +84,16 @@ func RunningLoop() {
 				}
 			}
 		case LIST:
-			for _, value := range shittyDB {
-				fmt.Println(value.FormattedOutput())
+			if wordsLength == 2 {
+				if strings.Compare(words[1], LONGLIST) == 0 {
+					for _, value := range shittyDB {
+						fmt.Println(value.LongOutput())
+					}
+				}
+			} else {
+				for _, value := range shittyDB {
+					fmt.Println(value.FormattedOutput())
+				}
 			}
 		case UPDATE:
 			if wordsLength < 3 || wordsLength > 4 {
@@ -91,9 +102,12 @@ func RunningLoop() {
 				if wordsLength == 4 {
 					if strings.Compare(words[1], SUBVAL) == 0 {
 						stringutil.UpdateSub(shittyDB[words[2]], words[3])
+					} else if strings.Compare(words[1], STUDIO) == 0 {
+						stringutil.UpdatePublisher(shittyDB[words[2]], words[3])
 					} else {
 						fmt.Println("Invalid Arguments")
 					}
+
 				} else {
 					stringutil.UpdateVal(shittyDB[words[1]], words[2])
 				}
@@ -126,6 +140,20 @@ func RunningLoop() {
 }
 
 func main() {
+	//TODO:	Figure out how to read in file before starting loop
+	file, err := os.Open("./shittyDB.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	data := make([]byte, 1000)
+	data, num := stringutil.ReadPrevDB(file, data)
+
+	buf := string(data[:num-1])
+	index := strings.Split(buf, " ")
+	fmt.Println(index)
+
 	RunningLoop() //	Main loop of execution
 	fmt.Println("Saving to shittyDB...")
 	SaveToShittyDB() //	Saving current info in shittyDB

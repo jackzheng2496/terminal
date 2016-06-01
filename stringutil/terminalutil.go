@@ -1,6 +1,7 @@
 package stringutil
 
 import (
+	"log"
 	"os"
 )
 
@@ -35,4 +36,12 @@ func RemoveMapValue(list map[string]Entertainer, name string) Entertainer {
 func SaveType(e Entertainer, file *os.File) (n int, err error) {
 	i, err := file.WriteString(e.LongOutput())
 	return i, err
+}
+
+func ReadPrevDB(file *os.File, buffer []byte) ([]byte, int) {
+	i, err := file.Read(buffer)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return buffer, i
 }

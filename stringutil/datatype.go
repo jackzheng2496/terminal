@@ -78,3 +78,11 @@ func (a *Anime) UpdateSubVal(value string) {
 func (m *Manga) UpdateSubVal(value string) {
 	m.Volume = value
 }
+
+func (a *Anime) UpdateProducer(value string) {
+	a.Studio = value
+}
+
+func (m *Manga) UpdateProducer(value string) {
+	m.Publisher = value
+}
