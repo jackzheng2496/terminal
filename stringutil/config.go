@@ -1,7 +1,8 @@
 package stringutil
 
 type Entertainer interface {
-	FormattedOutput()
+	FormattedOutput() string
+	LongOutput() string
 	UpdateTimeStamp(timestamp string)
 	UpdateValue(value string)
 	UpdateSubVal(value string)
@@ -17,4 +18,8 @@ func UpdateVal(e Entertainer, val string) {
 
 func UpdateSub(e Entertainer, val string) {
 	e.UpdateSubVal(val)
+}
+
+func GetData(e Entertainer) string {
+	return e.LongOutput()
 }

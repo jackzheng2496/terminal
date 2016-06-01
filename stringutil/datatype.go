@@ -37,21 +37,21 @@ func NewManga(name, timestamp, chapter, novel string) *Manga {
 	}
 }
 
-func (a *Anime) FormattedOutput() {
-	fmt.Printf("%s Season %s Episode %s", a.Name, a.Season, a.Episode)
+func (a *Anime) FormattedOutput() string {
+	return fmt.Sprintf("%s Season %s Episode %s", a.Name, a.Season, a.Episode)
 }
 
-func (a *Anime) LongOutput() {
-	fmt.Printf("%s Season %s Episode %s Studio %s Modified: %s",
+func (a *Anime) LongOutput() string {
+	return fmt.Sprintf("%s Season %s Episode %s Studio %s Modified: %s",
 		a.Name, a.Season, a.Episode, a.Studio, a.Timestamp)
 }
 
-func (m *Manga) FormattedOutput() {
-	fmt.Printf("%s Volume %s Chapter %s", m.Name, m.Volume, m.Chapter)
+func (m *Manga) FormattedOutput() string {
+	return fmt.Sprintf("%s Volume %s Chapter %s", m.Name, m.Volume, m.Chapter)
 }
 
-func (m *Manga) LongOutput() {
-	fmt.Printf("%s Volume %s Chapter %s Publisher %s Modified: %s",
+func (m *Manga) LongOutput() string {
+	return fmt.Sprintf("%s Volume %s Chapter %s Publisher %s Modified: %s",
 		m.Name, m.Volume, m.Chapter, m.Publisher, m.Timestamp)
 }
 

@@ -21,6 +21,11 @@ const (
 	SUBVAL string = "-s"
 )
 
+var (
+	shittyDB = make(map[string]stringutil.Entertainer)
+	reader   = bufio.NewReader(os.Stdin)
+)
+
 func AddOnArgs(option string, words []string) stringutil.Entertainer {
 	CurrentTime := time.Now()
 	FormatTime := CurrentTime.Format(time.ANSIC)
@@ -48,11 +53,8 @@ func AddOnArgs(option string, words []string) stringutil.Entertainer {
 
 }
 
-func main() {
-	reader := bufio.NewReader(os.Stdin)
-	shittyDB := make(map[string]stringutil.Entertainer)
+func RunningLoop() {
 	loop := true
-	//	Main loop of terminal
 	for {
 		if !loop {
 			break
@@ -64,9 +66,11 @@ func main() {
 		input = strings.Trim(input, "\n")  //Remove newline character
 		words := strings.Split(input, " ") //Split on space to get words
 
+		wordsLength := len(words)
+
 		switch words[0] { //Get first argument
 		case PUT:
-			if len(words) < 3 {
+			if wordsLength < 3 {
 				fmt.Println("Too little arguments")
 			} else {
 				NewE := AddOnArgs(words[1], words)
@@ -78,14 +82,13 @@ func main() {
 			}
 		case LIST:
 			for _, value := range shittyDB {
-				value.FormattedOutput()
-				fmt.Println()
+				fmt.Println(value.FormattedOutput())
 			}
 		case UPDATE:
-			if len(words) < 3 || len(words) > 4 {
+			if wordsLength < 3 || wordsLength > 4 {
 				fmt.Println("Too little arguments")
 			} else {
-				if len(words) == 4 {
+				if wordsLength == 4 {
 					if strings.Compare(words[1], SUBVAL) == 0 {
 						stringutil.UpdateSub(shittyDB[words[2]], words[3])
 					} else {
@@ -97,17 +100,16 @@ func main() {
 
 			}
 		case GET:
-			if len(words) == 2 {
+			if wordsLength == 2 {
 				_, exist := shittyDB[words[1]]
 				if exist {
-					shittyDB[words[1]].FormattedOutput()
-					fmt.Println()
+					fmt.Println(shittyDB[words[1]].FormattedOutput())
 				} else {
 					fmt.Println("No such key")
 				}
 			}
 		case RM:
-			if len(words) == 2 {
+			if wordsLength == 2 {
 				_, exist := shittyDB[words[1]]
 				if exist {
 					stringutil.RemoveMapValue(shittyDB, words[1])
@@ -121,16 +123,22 @@ func main() {
 			fmt.Println("Invalid Command")
 		}
 	}
-	fmt.Println("Saving to shittyDB...")
+}
 
-	//	Saving current info in shittyDB
+func main() {
+	RunningLoop() //	Main loop of execution
+	fmt.Println("Saving to shittyDB...")
+	SaveToShittyDB() //	Saving current info in shittyDB
+}
+
+func SaveToShittyDB() {
 	file, err := os.Create("./shittyDB.txt")
 	check(err)
 
 	defer file.Close() //Idiomatic to defer file closing after opening
 
 	for key, _ := range shittyDB {
-		file.WriteString(key)
+		stringutil.SaveType(shittyDB[key], file)
 		file.WriteString("\n")
 	}
 

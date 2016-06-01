@@ -1,5 +1,9 @@
 package stringutil
 
+import (
+	"os"
+)
+
 func AddToMap(list map[string]Entertainer, e Entertainer, name string) {
 	_, exist := list[name]
 	if !exist {
@@ -28,11 +32,7 @@ func RemoveMapValue(list map[string]Entertainer, name string) Entertainer {
 }
 
 //TODO:	Figure out how to check type at runtime
-// func SaveType(param interface{}) {
-// 	switch t := param.(type) {
-// 	case Anime:
-//
-// 	case Manga:
-//
-// 	}
-// }
+func SaveType(e Entertainer, file *os.File) (n int, err error) {
+	i, err := file.WriteString(e.LongOutput())
+	return i, err
+}
