@@ -25,6 +25,7 @@ const (
 
 var (
 	shittyDB = make(map[string]terminalutil.Entertainer)
+	Auth     = make(map[string]terminalutil.User)
 	reader   = bufio.NewReader(os.Stdin)
 )
 
@@ -147,34 +148,43 @@ func main() {
 	/*
 		TODO: User Authentication -> see if a file exists for them
 	*/
-	fmt.Println("Username: ")
+	fmt.Printf("Username: ")
 	input, _ := reader.ReadString('\n')
 	username := strings.Trim(input, "\n") //Remove newline character
-	fmt.Println("Password: ")
+	fmt.Printf("Password: ")
 	input, _ = reader.ReadString('\n')
 	password := strings.Trim(input, "\n")
 
-	up := &terminalutil.User{Username: username, Password: password}
+	up := &terminalutil.User{Username: username, Password: password, Filename: "./" + username + ".txt"}
 	file, err := os.Open("./userpass.txt")
 	if err != nil {
 		fmt.Println("Does not exist")
 	}
 	defer file.Close()
 
-	bool := terminalutil.CheckAuthentication(up, file)
+	terminalutil.FillMapWithID(file, Auth)
+	bool := terminalutil.CheckAuthentication(up, Auth)
 
 	if bool {
 		/*
 			TODO: Start of reading in shittyDB
 		*/
-		terminalutil.LoadFromShittyDB(shittyDB, "./shittyDB.txt")
-
-		/*
-			End of reading in shittyDB
-		*/
-		RunningLoop()                                           //	Main loop of execution
-		terminalutil.SaveToShittyDB(shittyDB, "./shittyDB.txt") //	Saving current info in shittyDB
+		terminalutil.LoadFromShittyDB(shittyDB, up.Filename)
 	} else {
-		fmt.Println("account creation")
+		fmt.Printf("Create account? (Y/N) ")
+		input, _ := reader.ReadString('\n')
+		input = strings.Trim(input, "\n")
+		switch input {
+		case "Y":
+			Auth[up.Username] = *up
+		case "N":
+			fmt.Println("Exiting app...")
+			os.Exit(0)
+		}
 	}
+	/*
+		End of reading in shittyDB
+	*/
+	RunningLoop()                                      //	Main loop of execution
+	terminalutil.SaveToShittyDB(shittyDB, up.Filename) //	Saving current info in shittyDB
 }
