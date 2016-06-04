@@ -1,8 +1,10 @@
 package stringutil
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func AddToMap(list map[string]Entertainer, e Entertainer, name string) {
@@ -33,9 +35,16 @@ func RemoveMapValue(list map[string]Entertainer, name string) Entertainer {
 }
 
 //TODO:	Figure out how to check type at runtime
-func SaveType(e Entertainer, file *os.File) (n int, err error) {
-	i, err := file.WriteString(e.LongOutput())
-	return i, err
+func SaveType(i interface{}, file *os.File) (n int, err error) {
+	fmt.Println("am i here")
+	num, err := file.WriteString(i.(Entertainer).SaveOutput())
+	switch i.(type) {
+	case Anime:
+		file.WriteString("a ")
+	case Manga:
+		file.WriteString("m ")
+	}
+	return num, err
 }
 
 func ReadPrevDB(file *os.File, buffer []byte) ([]byte, int) {
@@ -44,4 +53,13 @@ func ReadPrevDB(file *os.File, buffer []byte) ([]byte, int) {
 		log.Fatal(err)
 	}
 	return buffer, i
+}
+
+func CreateEntertainerFromLoad(name string) (Entertainer, string) {
+	split := strings.Split(name, " ")
+	if strings.Compare(split[0], "a") == 0 {
+		return NewAnime(split[1], strings.Join(split[5:], " "), split[3], split[2], split[4]), split[1]
+	} else {
+		return NewManga(split[1], strings.Join(split[5:], " "), split[3], split[2], split[4]), split[1]
+	}
 }

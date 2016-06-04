@@ -29,11 +29,12 @@ func NewAnime(name, timestamp, episode, season, studio string) *Anime {
 	}
 }
 
-func NewManga(name, timestamp, chapter, novel string) *Manga {
+func NewManga(name, timestamp, chapter, novel, publisher string) *Manga {
 	return &Manga{
-		Chapter:  chapter,
-		Volume:   novel,
-		Japanese: Japanese{Name: name, Timestamp: timestamp},
+		Chapter:   chapter,
+		Volume:    novel,
+		Publisher: publisher,
+		Japanese:  Japanese{Name: name, Timestamp: timestamp},
 	}
 }
 

@@ -44,9 +44,9 @@ func AddOnArgs(option string, words []string) stringutil.Entertainer {
 		}
 	case MANGA:
 		if len(words) == 4 {
-			return stringutil.NewManga(words[2], FormatTime, words[3], "0")
+			return stringutil.NewManga(words[2], FormatTime, words[3], "0", "n/a")
 		} else if len(words) == 3 {
-			return stringutil.NewManga(words[2], FormatTime, "0", "0")
+			return stringutil.NewManga(words[2], FormatTime, "0", "0", "n/a")
 		} else {
 			return nil
 		}
@@ -140,7 +140,9 @@ func RunningLoop() {
 }
 
 func main() {
-	//TODO:	Figure out how to read in file before starting loop
+	/*
+		TODO: Start of reading in shittyDB
+	*/
 	file, err := os.Open("./shittyDB.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -151,8 +153,16 @@ func main() {
 	data, num := stringutil.ReadPrevDB(file, data)
 
 	buf := string(data[:num-1])
-	index := strings.Split(buf, " ")
-	fmt.Println(index)
+	index := strings.Split(buf, "\n")
+
+	for val := range index {
+		e, name := stringutil.CreateEntertainerFromLoad(index[val])
+		stringutil.AddToMap(shittyDB, e, name)
+	}
+
+	/*
+		End of reading in shittyDB
+	*/
 
 	RunningLoop() //	Main loop of execution
 	fmt.Println("Saving to shittyDB...")
