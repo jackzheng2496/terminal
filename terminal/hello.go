@@ -99,17 +99,22 @@ func RunningLoop() {
 			if wordsLength < 3 || wordsLength > 4 {
 				fmt.Println("Too little arguments")
 			} else {
+				CurrentTime := time.Now()
+				FormatTime := CurrentTime.Format(time.ANSIC)
 				if wordsLength == 4 {
 					if strings.Compare(words[1], SUBVAL) == 0 {
 						stringutil.UpdateSub(shittyDB[words[2]], words[3])
+						stringutil.UpdateTimestamp(shittyDB[words[2]], FormatTime)
 					} else if strings.Compare(words[1], STUDIO) == 0 {
 						stringutil.UpdatePublisher(shittyDB[words[2]], words[3])
+						stringutil.UpdateTimestamp(shittyDB[words[2]], FormatTime)
 					} else {
 						fmt.Println("Invalid Arguments")
 					}
 
 				} else {
 					stringutil.UpdateVal(shittyDB[words[1]], words[2])
+					stringutil.UpdateTimestamp(shittyDB[words[1]], FormatTime)
 				}
 
 			}
