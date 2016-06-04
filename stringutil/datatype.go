@@ -39,7 +39,7 @@ func NewManga(name, timestamp, chapter, novel, publisher string) *Manga {
 }
 
 func (a *Anime) FormattedOutput() string {
-	return fmt.Sprintf("%s Season %s Episode %s", a.Name, a.Season, a.Episode)
+	return fmt.Sprintf("%s %s %s", a.Name, a.Season, a.Episode)
 }
 
 func (a *Anime) LongOutput() string {
@@ -52,7 +52,7 @@ func (a *Anime) SaveOutput() string {
 }
 
 func (m *Manga) FormattedOutput() string {
-	return fmt.Sprintf("%s Volume %s Chapter %s", m.Name, m.Volume, m.Chapter)
+	return fmt.Sprintf("%s %s %s", m.Name, m.Volume, m.Chapter)
 }
 
 func (m *Manga) LongOutput() string {

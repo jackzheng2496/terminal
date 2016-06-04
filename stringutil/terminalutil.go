@@ -1,6 +1,7 @@
 package stringutil
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -62,4 +63,32 @@ func CreateEntertainerFromLoad(name string) (Entertainer, string) {
 	} else {
 		return NewManga(split[1], strings.Join(split[5:], " "), split[3], split[2], split[4]), split[1]
 	}
+}
+
+func PrettyPrintingShort(list map[string]Entertainer) {
+	/*
+		Short listing for animes
+	*/
+	fmt.Printf("%-15s%-15s%-20s\n", "Name", "Season", "Episode")
+	fmt.Printf("-------------------------------------\n")
+	for _, value := range list {
+		if strings.Compare(value.GetType(), "Anime") == 0 {
+			val := strings.Split(value.FormattedOutput(), " ")
+			fmt.Printf("%-15s%-15s%-20s\n", val[0], val[1], val[2])
+		}
+	}
+	fmt.Println()
+
+	/*
+		Short listing for mangas
+	*/
+	fmt.Printf("%-15s%-15s%-20s\n", "Name", "Volume", "Chapter")
+	fmt.Printf("-------------------------------------\n")
+	for _, value := range list {
+		if strings.Compare(value.GetType(), "Manga") == 0 {
+			val := strings.Split(value.FormattedOutput(), " ")
+			fmt.Printf("%-15s%-15s%-20s\n", val[0], val[1], val[2])
+		}
+	}
+	fmt.Println()
 }

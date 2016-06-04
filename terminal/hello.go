@@ -91,9 +91,10 @@ func RunningLoop() {
 					}
 				}
 			} else {
-				for _, value := range shittyDB {
-					fmt.Println(value.FormattedOutput())
-				}
+				stringutil.PrettyPrintingShort(shittyDB)
+				// for _, value := range shittyDB {
+				// 	fmt.Println(value.FormattedOutput())
+				// }
 			}
 		case UPDATE:
 			if wordsLength < 3 || wordsLength > 4 {
@@ -118,6 +119,9 @@ func RunningLoop() {
 				}
 
 			}
+		/*
+			TODO:	Is there a point of GET if list does almost the same thing?
+		*/
 		case GET:
 			if wordsLength == 2 {
 				_, exist := shittyDB[words[1]]
