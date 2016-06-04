@@ -8,6 +8,7 @@ type Entertainer interface {
 	UpdateSubVal(value string)
 	UpdateProducer(value string)
 	SaveOutput() string
+	GetType() string
 }
 
 func UpdateTimestamp(e Entertainer, timestamp string) {
@@ -28,4 +29,8 @@ func GetData(e Entertainer) string {
 
 func UpdatePublisher(e Entertainer, val string) {
 	e.UpdateProducer(val)
+}
+
+func GetStructType(e Entertainer) string {
+	return e.GetType()
 }

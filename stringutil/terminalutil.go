@@ -1,7 +1,6 @@
 package stringutil
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -34,16 +33,17 @@ func RemoveMapValue(list map[string]Entertainer, name string) Entertainer {
 	}
 }
 
-//TODO:	Figure out how to check type at runtime
-func SaveType(i interface{}, file *os.File) (n int, err error) {
-	fmt.Println("am i here")
-	num, err := file.WriteString(i.(Entertainer).SaveOutput())
-	switch i.(type) {
-	case Anime:
+/*
+	TODO:	**** Figure out how to check type at runtime ****
+*/
+func SaveType(e Entertainer, file *os.File) (n int, err error) {
+	switch e.GetType() {
+	case "Anime":
 		file.WriteString("a ")
-	case Manga:
+	case "Manga":
 		file.WriteString("m ")
 	}
+	num, err := file.WriteString(e.SaveOutput())
 	return num, err
 }
 

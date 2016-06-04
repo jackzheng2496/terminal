@@ -95,3 +95,11 @@ func (a *Anime) UpdateProducer(value string) {
 func (m *Manga) UpdateProducer(value string) {
 	m.Publisher = value
 }
+
+func (a *Anime) GetType() string {
+	return "Anime"
+}
+
+func (m *Manga) GetType() string {
+	return "Manga"
+}
