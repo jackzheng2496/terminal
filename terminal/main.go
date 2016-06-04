@@ -145,12 +145,36 @@ func RunningLoop() {
 
 func main() {
 	/*
-		TODO: Start of reading in shittyDB
+		TODO: User Authentication -> see if a file exists for them
 	*/
-	terminalutil.LoadFromShittyDB(shittyDB, "./shittyDB.txt")
-	/*
-		End of reading in shittyDB
-	*/
-	RunningLoop()                                           //	Main loop of execution
-	terminalutil.SaveToShittyDB(shittyDB, "./shittyDB.txt") //	Saving current info in shittyDB
+	fmt.Println("Username: ")
+	input, _ := reader.ReadString('\n')
+	username := strings.Trim(input, "\n") //Remove newline character
+	fmt.Println("Password: ")
+	input, _ = reader.ReadString('\n')
+	password := strings.Trim(input, "\n")
+
+	up := &terminalutil.User{Username: username, Password: password}
+	file, err := os.Open("./userpass.txt")
+	if err != nil {
+		fmt.Println("Does not exist")
+	}
+	defer file.Close()
+
+	bool := terminalutil.CheckAuthentication(up, file)
+
+	if bool {
+		/*
+			TODO: Start of reading in shittyDB
+		*/
+		terminalutil.LoadFromShittyDB(shittyDB, "./shittyDB.txt")
+
+		/*
+			End of reading in shittyDB
+		*/
+		RunningLoop()                                           //	Main loop of execution
+		terminalutil.SaveToShittyDB(shittyDB, "./shittyDB.txt") //	Saving current info in shittyDB
+	} else {
+		fmt.Println("account creation")
+	}
 }
