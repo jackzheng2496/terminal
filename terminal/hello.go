@@ -86,15 +86,11 @@ func RunningLoop() {
 		case LIST:
 			if wordsLength == 2 {
 				if strings.Compare(words[1], LONGLIST) == 0 {
-					for _, value := range shittyDB {
-						fmt.Println(value.LongOutput())
-					}
+					stringutil.PrettyPrintingLong(shittyDB)
+
 				}
 			} else {
 				stringutil.PrettyPrintingShort(shittyDB)
-				// for _, value := range shittyDB {
-				// 	fmt.Println(value.FormattedOutput())
-				// }
 			}
 		case UPDATE:
 			if wordsLength < 3 || wordsLength > 4 {
