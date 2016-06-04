@@ -7,6 +7,7 @@ type Entertainer interface {
 	UpdateValue(value string)
 	UpdateSubVal(value string)
 	UpdateProducer(value string)
+	SaveOutput() string
 }
 
 func UpdateTimestamp(e Entertainer, timestamp string) {

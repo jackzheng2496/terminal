@@ -42,8 +42,12 @@ func (a *Anime) FormattedOutput() string {
 }
 
 func (a *Anime) LongOutput() string {
-	return fmt.Sprintf("%s Season %s Episode %s Studio %s Modified: %s",
+	return fmt.Sprintf("%s Seasons %s Episode %s Studio %s Modified: %s",
 		a.Name, a.Season, a.Episode, a.Studio, a.Timestamp)
+}
+
+func (a *Anime) SaveOutput() string {
+	return fmt.Sprintf("%s %s %s %s %s", a.Name, a.Season, a.Episode, a.Studio, a.Timestamp)
 }
 
 func (m *Manga) FormattedOutput() string {
@@ -53,6 +57,10 @@ func (m *Manga) FormattedOutput() string {
 func (m *Manga) LongOutput() string {
 	return fmt.Sprintf("%s Volume %s Chapter %s Publisher %s Modified: %s",
 		m.Name, m.Volume, m.Chapter, m.Publisher, m.Timestamp)
+}
+
+func (m *Manga) SaveOutput() string {
+	return fmt.Sprintf("%s %s %s %s %s", m.Name, m.Volume, m.Chapter, m.Publisher, m.Timestamp)
 }
 
 func (a *Anime) UpdateTimeStamp(timestamp string) {
