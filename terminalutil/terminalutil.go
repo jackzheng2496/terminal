@@ -2,7 +2,6 @@ package terminalutil
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strings"
 )
@@ -19,14 +18,6 @@ func SaveType(e Entertainer, file *os.File) (n int, err error) {
 	}
 	num, err := file.WriteString(e.SaveOutput())
 	return num, err
-}
-
-func ReadPrevDB(file *os.File, buffer []byte) ([]byte, int) {
-	i, err := file.Read(buffer)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return buffer, i
 }
 
 func CreateEntertainerFromLoad(name string) (Entertainer, string) {

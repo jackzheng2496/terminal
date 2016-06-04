@@ -147,49 +147,10 @@ func main() {
 	/*
 		TODO: Start of reading in shittyDB
 	*/
-	LoadFromShittyDB(shittyDB, "./shittyDB.txt")
+	terminalutil.LoadFromShittyDB(shittyDB, "./shittyDB.txt")
 	/*
 		End of reading in shittyDB
 	*/
-	RunningLoop()                              //	Main loop of execution
-	SaveToShittyDB(shittyDB, "./shittyDB.txt") //	Saving current info in shittyDB
-}
-
-/*
-	TODO: 	Save data as JSON format after getting User Authentication to work
-*/
-func SaveToShittyDB(shittyDB map[string]terminalutil.Entertainer, filename string) {
-	fmt.Println("Saving to", filename, "...")
-	file, err := os.Create(filename)
-	check(err)
-	defer file.Close() //Idiomatic to defer file closing after opening
-
-	for key, _ := range shittyDB {
-		terminalutil.SaveType(shittyDB[key], file)
-		file.WriteString("\n")
-	}
-	file.Sync()
-}
-
-func LoadFromShittyDB(shittyDB map[string]terminalutil.Entertainer, filename string) {
-	file, err := os.Open(filename)
-	check(err)
-	defer file.Close()
-
-	data := make([]byte, 1000)
-	data, num := terminalutil.ReadPrevDB(file, data)
-
-	buf := string(data[:num-1])
-	index := strings.Split(buf, "\n")
-
-	for val := range index {
-		e, name := terminalutil.CreateEntertainerFromLoad(index[val])
-		terminalutil.AddToMap(shittyDB, e, name)
-	}
-}
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
+	RunningLoop()                                           //	Main loop of execution
+	terminalutil.SaveToShittyDB(shittyDB, "./shittyDB.txt") //	Saving current info in shittyDB
 }
