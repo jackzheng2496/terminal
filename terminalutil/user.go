@@ -1,6 +1,7 @@
 package terminalutil
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -42,11 +43,17 @@ func FillMapWithID(file *os.File, list map[string]User) {
 	for value := range userpass {
 		up := strings.Split(userpass[value], " ")
 		if len(up) > 1 {
-			list[up[0]] = User{Username: up[0], Password: up[1]}
+			list[up[0]] = User{Username: up[0], Password: up[1], Filename: up[2]}
 		}
 	}
 }
 
 func SaveMapWithID(file *os.File, list map[string]User) {
+	for key, value := range list {
+		i, err := file.WriteString(key + " " + value.Password + " " + value.Filename + "\n")
 
+		if err != nil {
+			fmt.Println(err, i)
+		}
+	}
 }

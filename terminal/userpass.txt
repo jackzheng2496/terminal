@@ -1,1 +1,2 @@
-shittyDB password
+shittyDB password ./shittyDB.txt
+jackzheng jzheng2496 ./jackzheng.txt

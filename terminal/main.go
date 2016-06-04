@@ -160,11 +160,10 @@ func main() {
 	if err != nil {
 		fmt.Println("Does not exist")
 	}
-	defer file.Close()
 
 	terminalutil.FillMapWithID(file, Auth)
 	bool := terminalutil.CheckAuthentication(up, Auth)
-
+	file.Close()
 	if bool {
 		/*
 			TODO: Start of reading in shittyDB
@@ -187,4 +186,13 @@ func main() {
 	*/
 	RunningLoop()                                      //	Main loop of execution
 	terminalutil.SaveToShittyDB(shittyDB, up.Filename) //	Saving current info in shittyDB
+	/*
+		TODO: Save User-Pass combination in a file
+	*/
+	file, err = os.OpenFile("./userpass.txt", os.O_WRONLY, os.ModeAppend)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer file.Close()
+	terminalutil.SaveMapWithID(file, Auth)
 }
