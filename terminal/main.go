@@ -3,8 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/jackzheng2496/stringutil"
-	"log"
+	"github.com/jackzheng2496/terminalutil"
 	"os"
 	"strings"
 	"time"
@@ -25,28 +24,28 @@ const (
 )
 
 var (
-	shittyDB = make(map[string]stringutil.Entertainer)
+	shittyDB = make(map[string]terminalutil.Entertainer)
 	reader   = bufio.NewReader(os.Stdin)
 )
 
-func AddOnArgs(option string, words []string) stringutil.Entertainer {
+func AddOnArgs(option string, words []string) terminalutil.Entertainer {
 	CurrentTime := time.Now()
 	FormatTime := CurrentTime.Format(time.ANSIC)
 
 	switch option {
 	case ANIME:
 		if len(words) == 4 {
-			return stringutil.NewAnime(words[2], FormatTime, words[3], "0", "n/a")
+			return terminalutil.NewAnime(words[2], FormatTime, words[3], "0", "n/a")
 		} else if len(words) == 3 {
-			return stringutil.NewAnime(words[2], FormatTime, "0", "0", "n/a")
+			return terminalutil.NewAnime(words[2], FormatTime, "0", "0", "n/a")
 		} else {
 			return nil
 		}
 	case MANGA:
 		if len(words) == 4 {
-			return stringutil.NewManga(words[2], FormatTime, words[3], "0", "n/a")
+			return terminalutil.NewManga(words[2], FormatTime, words[3], "0", "n/a")
 		} else if len(words) == 3 {
-			return stringutil.NewManga(words[2], FormatTime, "0", "0", "n/a")
+			return terminalutil.NewManga(words[2], FormatTime, "0", "0", "n/a")
 		} else {
 			return nil
 		}
@@ -78,7 +77,7 @@ func RunningLoop() {
 			} else {
 				NewE := AddOnArgs(words[1], words)
 				if NewE != nil {
-					stringutil.AddToMap(shittyDB, NewE, words[2])
+					terminalutil.AddToMap(shittyDB, NewE, words[2])
 				} else {
 					fmt.Println("Invalid Arguments")
 				}
@@ -86,11 +85,11 @@ func RunningLoop() {
 		case LIST:
 			if wordsLength == 2 {
 				if strings.Compare(words[1], LONGLIST) == 0 {
-					stringutil.PrettyPrintingLong(shittyDB)
+					terminalutil.PrettyPrintingLong(shittyDB)
 
 				}
 			} else {
-				stringutil.PrettyPrintingShort(shittyDB)
+				terminalutil.PrettyPrintingShort(shittyDB)
 			}
 		case UPDATE:
 			if wordsLength < 3 || wordsLength > 4 {
@@ -100,18 +99,18 @@ func RunningLoop() {
 				FormatTime := CurrentTime.Format(time.ANSIC)
 				if wordsLength == 4 {
 					if strings.Compare(words[1], SUBVAL) == 0 {
-						stringutil.UpdateSub(shittyDB[words[2]], words[3])
-						stringutil.UpdateTimestamp(shittyDB[words[2]], FormatTime)
+						terminalutil.UpdateSub(shittyDB[words[2]], words[3])
+						terminalutil.UpdateTimestamp(shittyDB[words[2]], FormatTime)
 					} else if strings.Compare(words[1], STUDIO) == 0 {
-						stringutil.UpdatePublisher(shittyDB[words[2]], words[3])
-						stringutil.UpdateTimestamp(shittyDB[words[2]], FormatTime)
+						terminalutil.UpdatePublisher(shittyDB[words[2]], words[3])
+						terminalutil.UpdateTimestamp(shittyDB[words[2]], FormatTime)
 					} else {
 						fmt.Println("Invalid Arguments")
 					}
 
 				} else {
-					stringutil.UpdateVal(shittyDB[words[1]], words[2])
-					stringutil.UpdateTimestamp(shittyDB[words[1]], FormatTime)
+					terminalutil.UpdateVal(shittyDB[words[1]], words[2])
+					terminalutil.UpdateTimestamp(shittyDB[words[1]], FormatTime)
 				}
 
 			}
@@ -131,7 +130,7 @@ func RunningLoop() {
 			if wordsLength == 2 {
 				_, exist := shittyDB[words[1]]
 				if exist {
-					stringutil.RemoveMapValue(shittyDB, words[1])
+					terminalutil.RemoveMapValue(shittyDB, words[1])
 				} else {
 					fmt.Println("No such key")
 				}
@@ -148,47 +147,45 @@ func main() {
 	/*
 		TODO: Start of reading in shittyDB
 	*/
-	file, err := os.Open("./shittyDB.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	data := make([]byte, 1000)
-	data, num := stringutil.ReadPrevDB(file, data)
-
-	buf := string(data[:num-1])
-	index := strings.Split(buf, "\n")
-
-	for val := range index {
-		e, name := stringutil.CreateEntertainerFromLoad(index[val])
-		stringutil.AddToMap(shittyDB, e, name)
-	}
-
+	LoadFromShittyDB(shittyDB, "./shittyDB.txt")
 	/*
 		End of reading in shittyDB
 	*/
-
-	RunningLoop() //	Main loop of execution
-	fmt.Println("Saving to shittyDB...")
-	SaveToShittyDB() //	Saving current info in shittyDB
+	RunningLoop()                              //	Main loop of execution
+	SaveToShittyDB(shittyDB, "./shittyDB.txt") //	Saving current info in shittyDB
 }
 
 /*
 	TODO: 	Save data as JSON format after getting User Authentication to work
 */
-func SaveToShittyDB() {
-	file, err := os.Create("./shittyDB.txt")
+func SaveToShittyDB(shittyDB map[string]terminalutil.Entertainer, filename string) {
+	fmt.Println("Saving to", filename, "...")
+	file, err := os.Create(filename)
 	check(err)
-
 	defer file.Close() //Idiomatic to defer file closing after opening
 
 	for key, _ := range shittyDB {
-		stringutil.SaveType(shittyDB[key], file)
+		terminalutil.SaveType(shittyDB[key], file)
 		file.WriteString("\n")
 	}
-
 	file.Sync()
+}
+
+func LoadFromShittyDB(shittyDB map[string]terminalutil.Entertainer, filename string) {
+	file, err := os.Open(filename)
+	check(err)
+	defer file.Close()
+
+	data := make([]byte, 1000)
+	data, num := terminalutil.ReadPrevDB(file, data)
+
+	buf := string(data[:num-1])
+	index := strings.Split(buf, "\n")
+
+	for val := range index {
+		e, name := terminalutil.CreateEntertainerFromLoad(index[val])
+		terminalutil.AddToMap(shittyDB, e, name)
+	}
 }
 
 func check(e error) {
