@@ -174,6 +174,9 @@ func main() {
 	SaveToShittyDB() //	Saving current info in shittyDB
 }
 
+/*
+	TODO: 	Save data as JSON format after getting User Authentication to work
+*/
 func SaveToShittyDB() {
 	file, err := os.Create("./shittyDB.txt")
 	check(err)
