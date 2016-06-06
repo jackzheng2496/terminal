@@ -26,7 +26,8 @@ const (
 var (
 	shittyDB = make(map[string]terminalutil.Entertainer)
 	Auth     = make(map[string]terminalutil.User)
-	reader   = bufio.NewReader(os.Stdin)
+	//	TODO:	Consider using NewScanner instead
+	reader = bufio.NewReader(os.Stdin)
 )
 
 func AddOnArgs(option string, words []string) terminalutil.Entertainer {
@@ -58,11 +59,7 @@ func AddOnArgs(option string, words []string) terminalutil.Entertainer {
 
 func RunningLoop() {
 	loop := true
-	for {
-		if !loop {
-			break
-		}
-
+	for loop {
 		fmt.Print("terminal: ")
 
 		input, _ := reader.ReadString('\n')
@@ -184,7 +181,8 @@ func main() {
 	/*
 		End of reading in shittyDB
 	*/
-	RunningLoop()                                      //	Main loop of execution
+	RunningLoop() //	Main loop of execution
+	//	TODO:	Consider saving in JSON format
 	terminalutil.SaveToShittyDB(shittyDB, up.Filename) //	Saving current info in shittyDB
 	/*
 		TODO: Save User-Pass combination in a file
