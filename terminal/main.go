@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	//	TODO:	Consider using "flags" to parse instead of hand parsing it
 	PUT      string = "put"
 	RM       string = "rm"
 	UPDATE   string = "update"
@@ -73,8 +74,7 @@ func RunningLoop() {
 			if wordsLength < 3 {
 				fmt.Println("Too little arguments")
 			} else {
-				NewE := AddOnArgs(words[1], words)
-				if NewE != nil {
+				if NewE := AddOnArgs(words[1], words); NewE != nil {
 					terminalutil.AddToMap(shittyDB, NewE, words[2])
 				} else {
 					fmt.Println("Invalid Arguments")
@@ -84,7 +84,6 @@ func RunningLoop() {
 			if wordsLength == 2 {
 				if strings.Compare(words[1], LONGLIST) == 0 {
 					terminalutil.PrettyPrintingLong(shittyDB)
-
 				}
 			} else {
 				terminalutil.PrettyPrintingShort(shittyDB)

@@ -16,8 +16,7 @@ func SaveType(e Entertainer, file *os.File) (n int, err error) {
 	case "Manga":
 		file.WriteString("m ")
 	}
-	num, err := file.WriteString(e.SaveOutput())
-	return num, err
+	return file.WriteString(e.SaveOutput())
 }
 
 func CreateEntertainerFromLoad(name string) (Entertainer, string) {
